@@ -98,3 +98,40 @@ set(gcf, 'PaperSize', figure_size);
 print(gcf,'temperature_fom_mc.png','-dpng');
 print(gcf,'temperature_fom_mc.eps','-depsc');
 
+%% plot current by voltage
+
+figure('Units','centimeter','Position',[10 10 figure_size],...
+    'PaperPositionMode','auto')
+hold on  
+
+% errorbar(Vmed,Amed*10^3, Astd,'color',[.3 .3 .3])
+errorbar(Vmed,Amed*10^3, Astd,'.k')
+[volt_current_fit, volt_current_fit_data ]= fit( Vmed, Amed*10^3, 'poly1')
+R = 1/volt_current_fit.p1;
+Rsqrd = volt_current_fit_data.rsquare;
+p = plot(volt_current_fit);
+ set(p,'color',[.3 .3 .3])
+
+xlabel('Voltage [V]','Interpreter','Latex');
+ylabel('Current [mA]','Interpreter','Latex');
+grid
+set(gca,'YMinorTick','on')
+set(gca,'XMinorTick','on')
+set(gca,'fontsize',axis_font_size)
+legend('Data', 'Linear fit',...
+    'location','northwest','fontsize',legend_font_size)
+xlim([-1 25])
+ylim([-0.5 8])
+box on
+
+%% Save figures
+
+paperunits='centimeters';
+
+set(gcf,'paperunits',paperunits,'paperposition',[0 0 figure_size]);
+set(gcf, 'PaperSize', figure_size);
+print(gcf,'voltage_by_current_fom_mc.png','-dpng');
+print(gcf,'voltage_by_current_fom_mc.eps','-depsc');
+% print(gcf,'voltage_by_current_fom_mc.emf','-dmeta');
+
+ 
